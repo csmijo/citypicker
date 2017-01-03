@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import csmijo.com.citypicker.R;
+import csmijo.com.citypicker.utils.CommonViewHolder;
 
 /**
  * Created by chengqianqian-xy on 2016/12/30.
@@ -53,21 +54,14 @@ public class HotCityGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        HotCityViewHolder viewHolder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_hot_city_gridview, parent, false);
-            viewHolder = new HotCityViewHolder();
-            viewHolder.name = (TextView) convertView.findViewById(R.id.tv_hot_city_name);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (HotCityViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mCities.get(position));
+        TextView tv_name = CommonViewHolder.get(convertView, R.id.tv_hot_city_name);
+        tv_name.setText(mCities.get(position));
         return convertView;
     }
 
-    public class HotCityViewHolder {
-        TextView name;
-    }
 }

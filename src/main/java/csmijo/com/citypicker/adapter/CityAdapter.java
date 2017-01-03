@@ -17,6 +17,7 @@ import java.util.List;
 import csmijo.com.citypicker.R;
 import csmijo.com.citypicker.model.City;
 import csmijo.com.citypicker.model.LocateState;
+import csmijo.com.citypicker.utils.CommonViewHolder;
 import csmijo.com.citypicker.utils.PinyinUtils;
 import csmijo.com.citypicker.view.WrapHeightGridView;
 
@@ -114,7 +115,7 @@ public class CityAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CityViewHolder holder;
+        //CityViewHolder holder;
 
         int viewType = getItemViewType(position);
         switch (viewType) {
@@ -174,30 +175,28 @@ public class CityAdapter extends BaseAdapter {
             case 2:
                 // 所有
                 Log.e("cityAdapter", "getView: viewType = " + viewType);
+
                 if (convertView == null) {
                     convertView = LayoutInflater.from(mContext).inflate(R.layout.item_city_listview, parent, false);
-                    holder = new CityViewHolder();
-                    holder.letter = (TextView) convertView.findViewById(R.id.tv_item_city_listview_letter);
-                    holder.name = (TextView) convertView.findViewById(R.id.tv_item_city_listview_name);
-                    convertView.setTag(holder);
-                } else {
-                    holder = (CityViewHolder) convertView.getTag();
                 }
 
                 if (position >= 1) {
                     final String cityName = mCities.get(position).getName();
-                    holder.name.setText(cityName);
-                    // ???作用???
+                    TextView tv_name = CommonViewHolder.get(convertView, R.id.tv_item_city_listview_name);
+                    TextView tv_letter = CommonViewHolder.get(convertView, R.id.tv_item_city_listview_letter);
+
+                    tv_name.setText(cityName);
+
                     String currentLetter = PinyinUtils.getFirstLetter(mCities.get(position).getPinyin());
-                    String previousLetter = (position >= 1 ? PinyinUtils.getFirstLetter(mCities.get(position - 1).getPinyin()) : "");
+                    String previousLetter = PinyinUtils.getFirstLetter(mCities.get(position - 1).getPinyin());
                     if (!TextUtils.equals(currentLetter, previousLetter)) {
-                        holder.letter.setVisibility(View.VISIBLE);
-                        holder.letter.setText(currentLetter);
+                        tv_letter.setVisibility(View.VISIBLE);
+                        tv_letter.setText(currentLetter);
                     } else {
-                        holder.letter.setVisibility(View.GONE);
+                        tv_letter.setVisibility(View.GONE);
                     }
 
-                    holder.name.setOnClickListener(new View.OnClickListener() {
+                    tv_name.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (mOnCityClickListner != null) {
@@ -205,17 +204,15 @@ public class CityAdapter extends BaseAdapter {
                             }
                         }
                     });
+
                 }
+
+
                 break;
         }
         return convertView;
     }
 
-
-    private class CityViewHolder {
-        TextView letter;
-        TextView name;
-    }
 
     public void setOnCityClickListner(OnCityClickListner onCityClickListner) {
         mOnCityClickListner = onCityClickListner;

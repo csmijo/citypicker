@@ -11,6 +11,7 @@ import java.util.List;
 
 import csmijo.com.citypicker.R;
 import csmijo.com.citypicker.model.City;
+import csmijo.com.citypicker.utils.CommonViewHolder;
 
 /**
  * Created by chengqianqian-xy on 2016/12/29.
@@ -55,21 +56,13 @@ public class ResultAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ResultViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_search_result_listview, parent, false);
-            holder = new ResultViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.tv_item_result_listView_name);
-            convertView.setTag(holder);
-        } else {
-            holder = (ResultViewHolder) convertView.getTag();
         }
 
-        holder.name.setText(mCities.get(position).getName());
-        return convertView;
-    }
+        TextView tv_name = CommonViewHolder.get(convertView, R.id.tv_item_result_listView_name);
 
-    private class ResultViewHolder {
-        TextView name;
+        tv_name.setText(mCities.get(position).getName());
+        return convertView;
     }
 }
